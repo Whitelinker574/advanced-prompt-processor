@@ -107,12 +107,6 @@ pip install openai anthropic google-generativeai
 - **智能缓存**: 知识库和正则表达式预编译
 - **多实例支持**: 支持多个节点并行处理
 
-### 📊 技术指标
-- **启动时间**: <3秒（首次），<1秒（缓存后）
-- **内存占用**: ~20MB（单实例），额外实例仅+3MB
-- **处理速度**: 500+标签/秒（本地分类）
-- **支持规模**: 5万+标签知识库
-
 ## 🔧 高级配置
 
 ### 🤖 AI模型配置
@@ -200,8 +194,6 @@ pip install pandas requests numpy urllib3 openpyxl
 ## 📚 详细文档
 
 - **[快速开始指南](QUICK_START.md)** - 5分钟上手指南
-- **[终极用户指南](ULTIMATE_USER_GUIDE.md)** - 完整功能说明
-- **[更新日志](CHANGELOG.md)** - 版本更新记录
 
 ## 🆕 版本亮点
 
