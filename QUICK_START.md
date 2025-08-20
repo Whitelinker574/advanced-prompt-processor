@@ -1,4 +1,4 @@
-# 🚀 Advanced Prompt Processor 快速开始指南
+# 🚀 Advanced Prompt Processor 快速开始指南 v1.0.0
 
 ## 📦 极简安装
 
@@ -62,8 +62,8 @@ pip install pandas requests numpy urllib3 openpyxl
 - **danbooru_tags**: 输入标签，如 `1girl, long_hair, blue_eyes, smile`
 - **drawing_theme**: 绘图主题，如 `beautiful anime portrait`
 - **classification_mode**: 
-  - `local_knowledge` - 本地分类（推荐，无需API）
-  - `llm_classification` - AI在线分类（需要API）
+  - `local_knowledge` - 本地知识库分类（处理带下划线的原标格式tag效果较好，但一般情况不如LLM处理）
+  - `llm_classification` - LLM分类（推荐模式，分类更准确，适合一般使用情况）
 
 #### 输出说明
 - **final_prompt**: 📝 最终优化的提示词
@@ -79,11 +79,13 @@ pip install pandas requests numpy urllib3 openpyxl
 2. 基本设置：
    - **excel_file_path**: `所长个人法典结构化fix.xlsx`
    - **selection_mode**: `random` 或 `by_category`
+   - **category_filter**: 可以选择随机tag在所长法典的哪个分类中
+   - **subcategory_filter**: 可以直接选择所长法典中一条tag的内容进行输出
    - **prompt_count**: 选择数量（1-20）
 
 #### 随机画师/角色选择器
 1. **画师选择器**: 使用 `random画师.xlsx`
-2. **角色选择器**: 使用 `random角色.xlsx`
+2. **角色选择器**: 使用 `random角色.xlsx`，character_descriptions可选择是否同时输出角色的外貌信息
 3. 可启用**权重控制**和**避免重复**选项
 
 ### 🔗 Gelbooru标签提取器
@@ -91,8 +93,10 @@ pip install pandas requests numpy urllib3 openpyxl
 #### 从图片URL提取标签
 1. 输入Gelbooru图片URL
 2. 选择站点（推荐 `safebooru.org`）
-3. 设置输出格式和数量限制
-4. 自动提取并分类标签
+3. **重要配置**: 需要前往 [Gelbooru账户设置页面](https://gelbooru.com/index.php?page=account&s=options) 获取API Key
+4. 填入Gelbooru的**user_id**和**api_key**
+5. 设置输出格式和数量限制
+6. 自动提取并分类标签
 
 ### 📄 XML提示词生成器
 
@@ -169,7 +173,8 @@ KSampler种子 → 随机提示词选择器 → 高级提示词处理器 → CLI
 ## ⚙️ 常用设置推荐
 
 ### 🎯 高级提示词处理器最佳设置
-- **分类模式**: `local_knowledge`（速度快，无成本）
+- **分类模式**: `llm_classification`（推荐，分类更准确）
+- **本地知识库**: 适合处理带下划线的原标格式tag，有能力的用户可以自己修改知识库文件达到更多适配
 - **符号强化**: ✅ 开启（提升生成质量）
 - **自定义标签**: 根据需要添加专属角色/画师
 
