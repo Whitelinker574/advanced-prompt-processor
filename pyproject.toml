@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "comfyui-advanced-prompt-processor"
-version = "2.0.0"
+version = "1.0.0"
 description = "Advanced Prompt Processor for ComfyUI - 智能提示词处理、随机元素选择和Gelbooru标签集成"
 readme = "README.md"
 license = {text = "MIT"}
