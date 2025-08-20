@@ -1,0 +1,13 @@
+tag,description
+rating:safe,安全级别
+rating:questionable,可疑级别
+rating:explicit,露骨级别
+rating:sensitive,敏感级别
+safe,安全
+sensitive,敏感
+questionable,可疑
+explicit,露骨
+nsfw,不适合工作场所
+sfw,适合工作场所
+ecchi,色情边缘
+suggestive,暗示性
