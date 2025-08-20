@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 echo 🚀 一键上传项目到GitHub
 echo ================================
@@ -46,6 +47,45 @@ if errorlevel 1 (
 )
 
 echo ✅ GitHub CLI已登录
+
+REM 配置代理（如果需要）
+echo 🌐 检查网络连接...
+set /p use_proxy="是否需要使用代理? (Y/n): "
+if /i "%use_proxy%"=="" set use_proxy=Y
+if /i "%use_proxy%"=="Y" (
+    echo.
+    echo 📋 常用代理配置:
+    echo 1. http://127.0.0.1:7890  (Clash默认)
+    echo 2. http://127.0.0.1:10809 (V2rayN默认)
+    echo 3. http://127.0.0.1:1080  (其他代理)
+    echo 4. 自定义代理
+    echo.
+    set /p proxy_choice="请选择代理类型 (1-4): "
+    
+    if "%proxy_choice%"=="1" (
+        set proxy_url=http://127.0.0.1:7890
+    ) else if "%proxy_choice%"=="2" (
+        set proxy_url=http://127.0.0.1:10809
+    ) else if "%proxy_choice%"=="3" (
+        set proxy_url=http://127.0.0.1:1080
+    ) else if "%proxy_choice%"=="4" (
+        set /p proxy_url="请输入代理地址 (如: http://127.0.0.1:7890): "
+    ) else (
+        set proxy_url=http://127.0.0.1:7890
+    )
+    
+    echo 🔧 设置代理: !proxy_url!
+    git config --global http.proxy !proxy_url!
+    git config --global https.proxy !proxy_url!
+    echo ✅ 代理设置完成
+) else (
+    echo 🔧 清除代理设置...
+    git config --global --unset http.proxy 2>nul
+    git config --global --unset https.proxy 2>nul
+    echo ✅ 不使用代理
+)
+
+echo.
 
 REM 配置Git用户信息
 echo 🔧 检查Git配置...
@@ -129,12 +169,48 @@ git remote set-url origin https://github.com/Whitelinker574/%repo_name%.git
 REM 推送到GitHub
 echo 🔄 推送代码到GitHub...
 git branch -M main
+
+REM 推送重试机制
+set retry_count=0
+:retry_push
+set /a retry_count+=1
+echo 尝试第 !retry_count! 次推送...
+
 git push -u origin main
-if errorlevel 1 (
+if not errorlevel 1 (
+    echo ✅ 推送成功！
+    goto push_success
+)
+
+if !retry_count! lss 3 (
+    echo ⚠️  推送失败，10秒后重试...
+    timeout /t 10 /nobreak >nul
+    goto retry_push
+) else (
+    echo.
+    echo ❌ 推送失败，已重试 3 次
+    echo.
+    echo 🔧 可能的解决方案:
+    echo 1. 检查网络连接
+    echo 2. 检查代理设置
+    echo 3. 手动执行: git push -u origin main
+    echo.
+    set /p manual_retry="是否手动重试推送? (Y/n): "
+    if /i "!manual_retry!"=="" set manual_retry=Y
+    if /i "!manual_retry!"=="Y" (
+        echo 🔄 手动重试推送...
+        git push -u origin main
+        if not errorlevel 1 (
+            echo ✅ 推送成功！
+            goto push_success
+        )
+    )
     echo ❌ 推送失败
     pause
     exit /b 1
 )
+
+:push_success
 
 echo.
 echo ================================
